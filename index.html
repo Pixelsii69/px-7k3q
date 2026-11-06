@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pixels Code V2.0 Translator</title>
+<style>
+:root{--bg:#f3f4fb;--card:#fff;--tx:#12142b;--mu:#5b6184;--ac:#5b3df5;--ac2:#00a6c7;--bd:#d9dcf0;--in:#f7f8fe;--ok:#0f7b5c;--er:#b42318;--glow:rgba(91,61,245,.16);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#090b1a;--card:#12152e;--tx:#eef0ff;--mu:#9aa2cf;--ac:#8a7dff;--ac2:#38e1ff;--bd:#272d5c;--in:#0c0f24;--ok:#4fe3b0;--er:#ff8f85;--glow:rgba(138,125,255,.28)}}
+:root[data-theme="dark"]{--bg:#090b1a;--card:#12152e;--tx:#eef0ff;--mu:#9aa2cf;--ac:#8a7dff;--ac2:#38e1ff;--bd:#272d5c;--in:#0c0f24;--ok:#4fe3b0;--er:#ff8f85;--glow:rgba(138,125,255,.28)}
+*{box-sizing:inherit}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+.bg{position:fixed;inset:0;z-index:-1;background:radial-gradient(60% 40% at 50% 0,var(--glow),transparent 70%),linear-gradient(var(--bd) 1px,transparent 1px),linear-gradient(90deg,var(--bd) 1px,transparent 1px);background-size:auto,28px 28px,28px 28px;-webkit-mask-image:linear-gradient(#000 30%,transparent 95%);mask-image:linear-gradient(#000 30%,transparent 95%);opacity:.7}
+main{max-width:680px;margin:0 auto;padding:28px 16px 8px}
+header{text-align:center;margin-bottom:22px}
+.logo{display:inline-grid;grid-template-columns:repeat(3,14px);gap:4px;margin-bottom:14px}
+.logo i{width:14px;height:14px;border-radius:3px;background:var(--ac);animation:pulse 2.4s infinite ease-in-out}
+.logo i:nth-child(2n){background:var(--ac2)}.logo i:nth-child(5){background:var(--tx)}
+.logo i:nth-child(1){animation-delay:0s}.logo i:nth-child(2){animation-delay:.2s}.logo i:nth-child(3){animation-delay:.4s}.logo i:nth-child(4){animation-delay:.6s}.logo i:nth-child(5){animation-delay:.8s}.logo i:nth-child(6){animation-delay:1s}.logo i:nth-child(7){animation-delay:1.2s}.logo i:nth-child(8){animation-delay:1.4s}.logo i:nth-child(9){animation-delay:1.6s}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.72)}}
+@media(prefers-reduced-motion:reduce){.logo i{animation:none}}
+h1{font-size:clamp(1.7rem,7vw,2.4rem);margin:0;letter-spacing:.14em;font-weight:800;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+h1 span{font-size:.45em;letter-spacing:.1em;vertical-align:middle;border:1px solid var(--ac2);color:var(--ac2);-webkit-text-fill-color:var(--ac2);padding:2px 8px;border-radius:999px;margin-left:6px}
+.sub{color:var(--mu);margin:8px 0 0;font-size:.92rem}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:16px;box-shadow:0 10px 40px -12px var(--glow)}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--in);border:1px solid var(--bd);border-radius:12px;padding:4px;gap:4px}
+.seg button{padding:11px 6px;border:0;background:transparent;color:var(--mu);border-radius:9px;font:inherit;font-weight:600;font-size:.92rem;cursor:pointer;transition:.2s}
+.seg button.on{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;box-shadow:0 4px 14px -4px var(--ac)}
+label{display:block;font-size:.72rem;font-weight:700;color:var(--mu);margin:16px 2px 6px;text-transform:uppercase;letter-spacing:.12em}
+textarea,.box{width:100%;min-height:120px;padding:13px 14px;border:1px solid var(--bd);border-radius:12px;background:var(--in);color:var(--tx);font:15px/1.6 ui-monospace,Menlo,Consolas,monospace;word-break:break-all;white-space:pre-wrap}
+textarea{resize:vertical;outline:none;transition:border-color .2s,box-shadow .2s}
+textarea:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--glow)}
+.box:empty::before{content:"Your result appears here";color:var(--mu);opacity:.6;font-family:system-ui,sans-serif}
+#st{margin-top:10px;font-size:.88rem;min-height:1.3em}.ok{color:var(--ok)}.err{color:var(--er)}
+.row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.row button{flex:1 1 auto;padding:11px 14px;border:1px solid var(--bd);background:var(--in);color:var(--tx);border-radius:10px;font:inherit;font-size:.92rem;cursor:pointer;transition:.2s}
+.row button:hover{border-color:var(--ac)}
+.row button.pri{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border-color:transparent;font-weight:700}
+footer{max-width:680px;margin:30px auto 0;padding:22px 16px 28px;text-align:center;border-top:1px solid var(--bd);color:var(--mu);font-size:.85rem}
+footer b{display:block;color:var(--tx);letter-spacing:.14em;margin-bottom:2px}
+.ig{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:9px 16px;border:1px solid var(--bd);border-radius:999px;color:var(--tx);text-decoration:none;font-weight:600;background:var(--card);transition:.2s}
+.ig:hover{border-color:var(--ac2);box-shadow:0 0 0 3px var(--glow)}
+.ig svg{width:18px;height:18px;stroke:var(--ac2)}
+</style></head><body>
+<div class="bg"></div>
+<main>
+<header>
+<div class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<h1>PIXELS CODE<span>V2.0</span></h1>
+<p class="sub">Private cipher translator</p>
+</header>
+<section class="card">
+<div class="seg"><button id="be" class="on">English → Pixels</button><button id="bd">Pixels → English</button></div>
+<label id="li" for="in">English text</label>
+<textarea id="in" placeholder="Type here…" spellcheck="false"></textarea>
+<label>Result</label>
+<div class="box" id="out"></div>
+<div id="st"></div>
+<div class="row"><button id="cp" class="pri">Copy result</button><button id="sw">Use result as input</button><button id="cl">Clear</button></div>
+</section>
+</main>
+<footer><b>PIXELS CODE V2.0</b>Designed by Pixels.<br>A new generation of private linguistic encryption.<br>
+<a class="ig" href="https://www.instagram.com/mips_67" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/></svg>@mips_67</a>
+</footer>
+<script>
+const A="abcdefghijklmnopqrstuvwxyz",P="pixelsabcdfghjkmnoqrtuvwyz",V=[21,0,13,19,0],O=[14,17,1,8,19];
+const MK={'.':'[D]',',':'[C]','?':'[Q]','!':'[E]',"'":'[A]',':':'[T]',';':'[SC]','"':'[DQ]','(':'[LP]',')':'[RP]'};
+const IM={};for(const k in MK)IM[MK[k]]=k;
+const md=x=>((x%26)+26)%26,isL=c=>/[A-Za-z]/.test(c),up=c=>c<'a';
+const shiftOf=(g,w,s)=>(V[g%5]+3*(w-1)+7*g+11*(s-1))%26;
+const rotAmt=(w,s,n)=>(w+s+O[(w-1)%5])%n;
+const swapPairs=a=>{for(let i=0;i+1<a.length;i+=2){const t=a[i];a[i]=a[i+1];a[i+1]=t}};
+function encSentence(sent,s){
+  let g=0;const st=[[],[],[],[]],out=[];
+  sent.split(' ').filter(Boolean).forEach((tok,i)=>{
+    const w=i+1,parts=tok.match(/[A-Za-z]+|[^A-Za-z]/g)||[],S=[[],[],[],[]],o=[];
+    parts.forEach(p=>{
+      if(!isL(p)){S.forEach(x=>x.push(p));o.push(MK[p]);return}
+      let a=[...p].map(ch=>{
+        const sub=P[A.indexOf(ch.toLowerCase())],c=String.fromCharCode(97+(sub.charCodeAt(0)-97+shiftOf(g,w,s))%26);g++;
+        return up(ch)?c.toUpperCase():c});
+      S[0].push(a.join(''));
+      if(w%2===0)a.reverse();S[1].push(a.join(''));
+      const R=rotAmt(w,s,a.length);a=a.slice(R).concat(a.slice(0,R));S[2].push(a.join(''));
+      if(w%3===0)swapPairs(a);S[3].push(a.join(''));o.push(a.join(''))});
+    S.forEach((x,k)=>st[k].push(x.join('')));out.push(o.join(''))});
+  return{text:out.join('~'),stages:st.map(x=>x.join(' '))};
+}
+function encrypt(raw){
+  const t=raw.replace(/[’‘]/g,"'").replace(/[“”]/g,'"').replace(/\s+/g,' ').trim();
+  if(!t)return{text:'',stages:[]};
+  const bad=[...new Set([...t].filter(c=>c!==' '&&!isL(c)&&!MK[c]))];
+  if(bad.length)throw new Error('Unsupported character(s): '+bad.join(' ')+'. V2.0 supports A–Z and . , ? ! \' : ; " ( )');
+  const sents=t.split(/(?<=[.?!])\s+/);let words=0,sum=0;
+  for(const c of t)if(isL(c))sum+=c.toLowerCase().charCodeAt(0)-97;
+  const enc=sents.map((x,i)=>{words+=x.split(' ').length;return encSentence(x,i+1)});
+  const text='PX2|'+enc.map(e=>e.text).join('//')+'#'+String(words).padStart(2,'0')+'*'+String(sum%97).padStart(2,'0');
+  return{text,stages:enc.map(e=>e.stages)};
+}
+function decSentence(enc,s){
+  let g=0;
+  return enc.split('~').map((tok,i)=>{
+    const w=i+1;
+    return(tok.match(/\[(?:DQ|SC|LP|RP|D|C|Q|E|A|T)\]|[A-Za-z]+|[^]/g)||[]).map(p=>{
+      if(p.length>1&&p[0]==='[')return IM[p];
+      if(!isL(p)){throw new Error('Unexpected character “'+p+'” in the Pixels text.')}
+      let a=[...p];const n=a.length;
+      if(w%3===0)swapPairs(a);
+      const R=rotAmt(w,s,n);a=a.slice(n-R).concat(a.slice(0,n-R));
+      if(w%2===0)a.reverse();
+      return a.map(ch=>{
+        const v=md(ch.toLowerCase().charCodeAt(0)-97-shiftOf(g,w,s));g++;
+        const c=A[P.indexOf(String.fromCharCode(97+v))];return up(ch)?c.toUpperCase():c}).join('')
+    }).join('')}).join(' ');
+}
+function decrypt(raw){
+  const m=raw.trim().match(/^PX2\|([^]*)#(\d+)\*(\d+)$/);
+  if(!m)throw new Error('Not a valid V2.0 message. It must look like PX2|…#NN*NN.');
+  const text=m[1].split('//').map((x,i)=>decSentence(x,i+1)).join(' ');
+  let words=0,sum=0;
+  text.split(/(?<=[.?!])\s+/).forEach(x=>words+=x.split(' ').length);
+  for(const c of text)if(isL(c))sum+=c.toLowerCase().charCodeAt(0)-97;
+  return{text,wc:+m[2],cs:+m[3],calcWc:words,calcCs:sum%97};
+}
+/*UI*/
+const $=i=>document.getElementById(i);let mode='enc';
+function run(){
+  const st=$('st');st.className='';st.textContent='';
+  try{
+    if(!$('in').value.trim()){$('out').textContent='';return}
+    if(mode==='enc'){
+      const r=encrypt($('in').value);$('out').textContent=r.text;
+          }else{
+      const r=decrypt($('in').value);$('out').textContent=r.text;
+      const a=r.wc===r.calcWc,b=r.cs===r.calcCs;
+      st.className=a&&b?'ok':'err';
+      st.textContent=(a?'✓':'✗')+' Word count '+r.wc+(a?'':' (found '+r.calcWc+')')+'  ·  '+(b?'✓':'✗')+' Checksum '+r.cs+(b?'':' (found '+r.calcCs+')');
+    }
+  }catch(e){$('out').textContent='';st.className='err';st.textContent=e.message}
+}
+function setMode(m){
+  mode=m;$('be').classList.toggle('on',m==='enc');$('bd').classList.toggle('on',m==='dec');
+  $('li').textContent=m==='enc'?'English text':'Pixels Code text';run();
+}
+$('be').onclick=()=>setMode('enc');$('bd').onclick=()=>setMode('dec');
+$('in').oninput=run;
+$('cl').onclick=()=>{$('in').value='';run()};
+$('sw').onclick=()=>{const t=$('out').textContent;if(!t)return;$('in').value=t;setMode(mode==='enc'?'dec':'enc')};
+$('cp').onclick=async()=>{
+  const t=$('out').textContent;if(!t)return;
+  try{await navigator.clipboard.writeText(t)}catch(e){const r=document.createRange();r.selectNodeContents($('out'));const s=getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand('copy')}catch(_){}}
+  $('cp').textContent='Copied ✓';setTimeout(()=>$('cp').textContent='Copy result',1200);
+};
+</script></body></html>
