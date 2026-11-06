@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Pixels Code V2.0 Translator</title>
+<title>Pixels Code V2.1 Translator</title>
 <style>
 :root{--bg:#f3f4fb;--card:#fff;--tx:#12142b;--mu:#5b6184;--ac:#5b3df5;--ac2:#00a6c7;--bd:#d9dcf0;--in:#f7f8fe;--ok:#0f7b5c;--er:#b42318;--glow:rgba(91,61,245,.16);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#090b1a;--card:#12152e;--tx:#eef0ff;--mu:#9aa2cf;--ac:#8a7dff;--ac2:#38e1ff;--bd:#272d5c;--in:#0c0f24;--ok:#4fe3b0;--er:#ff8f85;--glow:rgba(138,125,255,.28)}}
@@ -71,6 +71,17 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .back{display:block;text-align:center;margin-top:6px;padding:12px;border:1px solid var(--bd);border-radius:12px;background:var(--card);color:var(--tx);text-decoration:none;font-weight:600}
 .back:hover{border-color:var(--ac)}
 @media(max-width:480px){.ops{grid-template-columns:1fr}}
+
+:root.sec.sec{--bg:#080000;--card:#150303;--tx:#ff4d4d;--mu:#c75a5a;--ac:#ff1a1a;--ac2:#ff6a3d;--bd:#4d0b0b;--in:#0c0000;--glow:rgba(255,0,0,.32)}
+.egg{display:block;width:max-content;margin:12px 0 0 auto;padding:8px 6px;font-size:9px;line-height:1;text-decoration:none;color:color-mix(in srgb,var(--card) 90%,var(--tx))}
+.sec h1{-webkit-text-fill-color:currentColor;background:none;color:var(--ac);text-shadow:0 0 18px var(--ac);animation:flick 2.6s infinite}
+@keyframes flick{0%,100%{opacity:1}46%{opacity:1}48%{opacity:.35}50%{opacity:1}53%{opacity:.5}55%{opacity:1}}
+.warn{border-color:var(--ac);animation:redpulse 2.2s infinite ease-in-out}
+@keyframes redpulse{0%,100%{box-shadow:0 0 18px -6px var(--ac)}50%{box-shadow:0 0 38px 0 var(--ac)}}
+.warn h2{color:var(--ac)}
+.danger{display:block;margin-top:14px;padding:14px;text-align:center;border:1px solid var(--ac);border-radius:12px;background:#1d0000;color:#fff;text-decoration:none;font-weight:700;word-break:break-all}
+.danger:hover{background:var(--ac)}
+@media(prefers-reduced-motion:reduce){.sec h1,.warn{animation:none}}
 </style></head><body>
 <div class="bg"></div>
 <div class="topwrap">
@@ -82,7 +93,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <section id="v-translator" class="view">
 <header>
 <div class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-<h1>PIXELS CODE<span>V2.0</span></h1>
+<h1>PIXELS CODE<span>V2.1</span></h1>
 <p class="sub">Private cipher translator</p>
 </header>
 <section class="card">
@@ -101,11 +112,11 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <p>PIXELS CODE is a custom linguistic encoding system created by Pixels.</p>
 <p>It was designed to transform ordinary English text into a unique coded format that looks completely different from the original message.</p>
 <p>Unlike traditional text translators, PIXELS CODE uses its own custom encoding and decoding rules to convert messages between English and Pixels Code.</p></div>
-<div class="panel"><h2>How Does It Work?</h2><p>PIXELS CODE V2.0 has two main operations:</p>
+<div class="panel"><h2>How Does It Work?</h2><p>PIXELS CODE V2.1 has two main operations:</p>
 <div class="ops"><div><b>1. Encoding</b><span>English → Pixels Code</span><p>The system takes an English message and processes it using its custom encoding rules, producing a coded output.</p></div>
 <div><b>2. Decoding</b><span>Pixels Code → English</span><p>The system processes the coded message in reverse, reconstructing the original English text.</p></div></div></div>
 <div class="panel"><h2>System Features</h2><ul class="feat">
-<li><b>PX2 Header</b>Identifies messages encoded using PIXELS CODE V2.0.</li>
+<li><b>PX2 Header</b>Identifies messages encoded using PIXELS CODE V2.1.</li>
 <li><b>Word Counter</b>Tracks the number of words in the encoded message.</li>
 <li><b>Checksum</b>Provides a verification value for checking message consistency.</li>
 <li><b>Custom Transformations</b>Uses its own set of linguistic and positional transformations.</li>
@@ -114,8 +125,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <p>PIXELS CODE is a personal experimental project created for fun and educational purposes.</p>
 <p><b>It is NOT a professional encryption algorithm and does not provide real cryptographic security.</b></p>
 <p>Do not use it to protect passwords, private information, or sensitive data.</p>
-<p>It is simply a creative coding project made to be shared and enjoyed by everyone.</p></div>
-<div class="panel"><div class="facts"><div><small>Current version</small>PIXELS CODE V2.0</div><div><small>Created by</small>Pixels</div><div><small>Purpose</small>Just for fun</div></div></div>
+<p>It is simply a creative coding project made to be shared and enjoyed by everyone.</p><a class="egg" href="#secret">do not click</a>
+</div>
+<div class="panel"><div class="facts"><div><small>Current version</small>PIXELS CODE V2.1</div><div><small>Created by</small>Pixels</div><div><small>Purpose</small>Just for fun</div></div></div>
 <a class="back" href="#translator">← Back to Translator</a>
 </section>
 <section id="v-developer" class="view" hidden>
@@ -132,9 +144,16 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <a class="ig" style="margin-top:0" href="https://www.instagram.com/mips_67" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/></svg>Instagram · @mips_67</a></div>
 <a class="back" href="#translator">← Back to Translator</a>
 </section>
+<section id="v-secret" class="view" hidden>
+<header><h1>⚠ WARNING ⚠</h1><p class="sub">RESTRICTED AREA</p></header>
+<div class="panel warn"><h2>You were not supposed to find this.</h2>
+<p>This is a restricted area. If you enter the link below, dangerous things will happen.</p>
+<p>There is no turning back. You have been warned.</p>
+<a class="danger" href="https://youtu.be/MrmPDUvKyLs?si=6wKP7fifi99oVcQG" target="_blank" rel="noopener noreferrer">youtu.be/MrmPDUvKyLs</a></div>
+<a class="back" href="#translator">← Escape to safety</a>
+</section>
 </main>
-<footer><b>PIXELS CODE V2.0</b>Designed by Pixels.<br>A new generation of private linguistic encryption.<br>
-<a class="ig" href="https://www.instagram.com/mips_67" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/></svg>@mips_67</a>
+<footer><b>PIXELS CODE V2.1</b>Designed by Pixels.<br>A new generation of private linguistic encryption.
 </footer>
 <script>
 const A="abcdefghijklmnopqrstuvwxyz",P="pixelsabcdfghjkmnoqrtuvwyz",V=[21,0,13,19,0],O=[14,17,1,8,19];
@@ -164,7 +183,7 @@ function encrypt(raw){
   const t=raw.replace(/[’‘]/g,"'").replace(/[“”]/g,'"').replace(/\s+/g,' ').trim();
   if(!t)return{text:'',stages:[]};
   const bad=[...new Set([...t].filter(c=>c!==' '&&!isL(c)&&!MK[c]))];
-  if(bad.length)throw new Error('Unsupported character(s): '+bad.join(' ')+'. V2.0 supports A–Z and . , ? ! \' : ; " ( )');
+  if(bad.length)throw new Error('Unsupported character(s): '+bad.join(' ')+'. V2.1 supports A–Z and . , ? ! \' : ; " ( )');
   const sents=t.split(/(?<=[.?!])\s+/);let words=0,sum=0;
   for(const c of t)if(isL(c))sum+=c.toLowerCase().charCodeAt(0)-97;
   const enc=sents.map((x,i)=>{words+=x.split(' ').length;return encSentence(x,i+1)});
@@ -189,7 +208,7 @@ function decSentence(enc,s){
 }
 function decrypt(raw){
   const m=raw.trim().match(/^PX2\|([^]*)#(\d+)\*(\d+)$/);
-  if(!m)throw new Error('Not a valid V2.0 message. It must look like PX2|…#NN*NN.');
+  if(!m)throw new Error('Not a valid V2.1 message. It must look like PX2|…#NN*NN.');
   const text=m[1].split('//').map((x,i)=>decSentence(x,i+1)).join(' ');
   let words=0,sum=0;
   text.split(/(?<=[.?!])\s+/).forEach(x=>words+=x.split(' ').length);
@@ -226,18 +245,23 @@ $('cp').onclick=async()=>{
   $('cp').textContent='Copied ✓';setTimeout(()=>$('cp').textContent='Copy result',1200);
 };
 /*NAV*/
-const VIEWS={translator:'Translator',about:'About Pixels Code',developer:'The Developer'};
+const VIEWS={translator:'Translator',about:'About Pixels Code',developer:'The Developer',secret:'⚠'};
 const hb=$('hb'),mn=$('menu');
 function menu(o){mn.classList.toggle('open',o);hb.classList.toggle('open',o);hb.setAttribute('aria-expanded',String(o))}
-function route(){
-  const h=location.hash.slice(1),n=VIEWS[h]?h:'translator';
+function show(n){
+  if(!VIEWS[n])n='translator';
   for(const k in VIEWS)$('v-'+k).hidden=k!==n;
   mn.querySelectorAll('a').forEach(a=>a.classList.toggle('on',a.dataset.v===n));
-  document.title='Pixels Code V2.0 – '+VIEWS[n];window.scrollTo(0,0);menu(false);
+  document.documentElement.classList.toggle('sec',n==='secret');document.title='Pixels Code V2.1 – '+VIEWS[n];window.scrollTo(0,0);menu(false);
 }
+function go(n){try{history.replaceState(null,'','#'+n)}catch(e){location.hash=n}show(n)}
 hb.onclick=e=>{e.stopPropagation();menu(!mn.classList.contains('open'))};
-mn.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>menu(false)));
-document.addEventListener('click',e=>{if(!mn.contains(e.target))menu(false)});
+document.addEventListener('click',e=>{
+  const a=e.target.closest('a[href^="#"]');
+  if(a){const n=a.getAttribute('href').slice(1);if(VIEWS[n]){e.preventDefault();go(n);return}}
+  if(!mn.contains(e.target))menu(false);
+});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')menu(false)});
-addEventListener('hashchange',route);route();
+addEventListener('hashchange',()=>show(location.hash.slice(1)));
+show(location.hash.slice(1));
 </script></body></html>
