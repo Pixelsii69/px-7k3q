@@ -82,6 +82,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .danger{display:block;margin-top:14px;padding:14px;text-align:center;border:1px solid var(--ac);border-radius:12px;background:#1d0000;color:#fff;text-decoration:none;font-weight:700;word-break:break-all}
 .danger:hover{background:var(--ac)}
 @media(prefers-reduced-motion:reduce){.sec h1,.warn{animation:none}}
+#vs{margin-bottom:8px}
+.vnote{margin-top:12px!important;padding:12px;border:1px solid var(--ac2);border-radius:12px;background:var(--in)}
 </style></head><body>
 <div class="bg"></div>
 <div class="topwrap">
@@ -97,6 +99,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <p class="sub">Private cipher translator</p>
 </header>
 <section class="card">
+<div class="seg" id="vs"><button id="v2" class="on">Version 2.1</button><button id="v3">Version 3.0</button></div>
 <div class="seg"><button id="be" class="on">English → Pixels</button><button id="bd">Pixels → English</button></div>
 <label id="li" for="in">English text</label>
 <textarea id="in" placeholder="Type here…" spellcheck="false"></textarea>
@@ -111,13 +114,18 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <div class="panel"><h2>What is PIXELS CODE?</h2>
 <p>PIXELS CODE is a custom linguistic encoding system created by Pixels.</p>
 <p>It was designed to transform ordinary English text into a unique coded format that looks completely different from the original message.</p>
-<p>Unlike traditional text translators, PIXELS CODE uses its own custom encoding and decoding rules to convert messages between English and Pixels Code.</p></div>
-<div class="panel"><h2>How Does It Work?</h2><p>PIXELS CODE V2.1 has two main operations:</p>
+<p>Unlike traditional text translators, PIXELS CODE uses its own custom encoding and decoding rules to convert messages between English and Pixels Code.</p>
+<p>This website now includes two independent versions: <b>V2.1</b> and <b>V3.0</b>. Switch between them from the Translator page.</p></div>
+<div class="panel"><h2>How Does It Work?</h2><p>Both versions have two main operations:</p>
 <div class="ops"><div><b>1. Encoding</b><span>English → Pixels Code</span><p>The system takes an English message and processes it using its custom encoding rules, producing a coded output.</p></div>
 <div><b>2. Decoding</b><span>Pixels Code → English</span><p>The system processes the coded message in reverse, reconstructing the original English text.</p></div></div></div>
+<div class="panel"><h2>Versions</h2>
+<div class="ops"><div><b>V2.1</b><span>PX2 header</span><p>English letters and common punctuation. Uses a custom alphabet, positional shifts, word rotations, a word counter and a checksum.</p></div>
+<div><b>V3.0</b><span>PX3 header</span><p>A separate engine with its own 257-symbol library, multi-key mathematics, position-based rules and layered verification.</p></div></div>
+<p class="vnote"><b>New in V3.0:</b> it can convert text in both <b>English</b> and <b>Arabic</b>, plus numbers, symbols, emojis and other Unicode text. It also preserves spaces and line breaks exactly.</p></div>
 <div class="panel"><h2>System Features</h2><ul class="feat">
-<li><b>PX2 Header</b>Identifies messages encoded using PIXELS CODE V2.1.</li>
-<li><b>Word Counter</b>Tracks the number of words in the encoded message.</li>
+<li><b>PX2 / PX3 Header</b>Identifies the version: PX2 for V2.1 and PX3 for V3.0.</li>
+<li><b>Word / Character Counter</b>Tracks the number of words (V2.1) or characters (V3.0) in the message.</li>
 <li><b>Checksum</b>Provides a verification value for checking message consistency.</li>
 <li><b>Custom Transformations</b>Uses its own set of linguistic and positional transformations.</li>
 <li><b>Reversible Encoding</b>Allows encoded messages to be converted back into their original text.</li></ul></div>
@@ -127,7 +135,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <p>Do not use it to protect passwords, private information, or sensitive data.</p>
 <p>It is simply a creative coding project made to be shared and enjoyed by everyone.</p><a class="egg" href="#secret">do not click</a>
 </div>
-<div class="panel"><div class="facts"><div><small>Current version</small>PIXELS CODE V2.1</div><div><small>Created by</small>Pixels</div><div><small>Purpose</small>Just for fun</div></div></div>
+<div class="panel"><div class="facts"><div><small>Versions</small>PIXELS CODE V2.1 · V3.0</div><div><small>Created by</small>Pixels</div><div><small>Purpose</small>Just for fun</div></div></div>
 <a class="back" href="#translator">← Back to Translator</a>
 </section>
 <section id="v-developer" class="view" hidden>
@@ -220,7 +228,13 @@ const $=i=>document.getElementById(i);let mode='enc';
 function run(){
   const st=$('st');st.className='';st.textContent='';
   try{
-    if(!$('in').value.trim()){$('out').textContent='';return}
+    const iv=$('in').value;$('out').style.cssText=ver===3&&mode==='enc'?'direction:ltr;unicode-bidi:bidi-override':'';
+    if(ver===3?!iv:!iv.trim()){$('out').textContent='';return}
+    if(ver===3){
+      if(mode==='enc')$('out').textContent=enc3(iv);
+      else{const r=dec3(iv);$('out').textContent=r.text;st.className='ok';st.textContent='✓ Verified  ·  '+r.n+' characters'}
+      return;
+    }
     if(mode==='enc'){
       const r=encrypt($('in').value);$('out').textContent=r.text;
           }else{
@@ -244,6 +258,73 @@ $('cp').onclick=async()=>{
   try{await navigator.clipboard.writeText(t)}catch(e){const r=document.createRange();r.selectNodeContents($('out'));const s=getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand('copy')}catch(_){}}
   $('cp').textContent='Copied ✓';setTimeout(()=>$('cp').textContent='Copy result',1200);
 };
+/*V3*/
+let ver=2;
+const V3=(()=>{
+  const MOD=257,K=[37,101,59,173,211],m=x=>((x%MOD)+MOD)%MOD;
+  const inv=a=>{let r=1,b=m(a),e=MOD-2;while(e){if(e&1)r=r*b%MOD;b=b*b%MOD;e>>=1}return r};
+  if(!K[0]||!K[3])throw new Error('Invalid Key Configuration');
+  const I1=inv(K[0]),I4=inv(K[3]);
+  const AV=[11,17,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131];
+  const DV=[137,139,149,151,157,163,167,173,179,181];
+  const PL=" \n\t.,!?:;'\"()[]{}-_+=/\\@#$%&";
+  const used=new Set([...AV,...DV]),free=[];
+  for(let v=0;v<MOD;v++)if(!used.has(v))free.push(v);
+  const val=new Map(),chr=new Map(),put=(c,v)=>{val.set(c,v);chr.set(v,c)};
+  [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'].forEach((c,i)=>put(c,AV[i]));
+  [...'0123456789'].forEach((c,i)=>put(c,DV[i]));
+  [...'abcdefghijklmnopqrstuvwxyz'].forEach((c,i)=>put(c,free[i]));
+  [...PL].forEach((c,i)=>put(c,free[26+i]));
+  const n0=26+PL.length,START=free[n0],END=free[n0+1],EXT=free[n0+2];
+  const SPEC='@$_&-+/٫؛:£~π÷×§∆°∑∏√∛∜∞≠≈≤≥±∓∝∴∵∠⊥∥∧∨∩∪∈∉⊂⊃⊆⊇∀∃∅∇∂∫∬∮⊕⊗⊙⊞⊟⊠⊡◆◇■□▣▤▥▦▧▨▩▲△▼▽▶▷◀◁◈◉◎●○◌◍◐◑◒◓◔◕◖◗←↑→↓↔↕↖↗↘↙⇐⇑⇒⇓⇔⇕⇖⇗⇘⇙↚↛↜↝↞↠↢↣↦↤↩↪↫↬↭↯¤§¶†‡※⁂⁑⁕⁖⁘⁙⁛⁜⁝⁞‰‱′″‴‵‶‷‸αβγδεζηθικλμνξοπρστυφχψωΩΔΘΛΣΦΨΓΞ♠♣♥♦♤♧♡♢♜♞♝♛♚♟♙♘♗♖♕♔';
+  const SYM=[...new Set([...SPEC])].filter(c=>c!=='§'&&c!=='¶');
+  for(let c=0x2801;SYM.length<MOD;c++)SYM.push(String.fromCharCode(c));
+  const SI=new Map(SYM.map((c,i)=>[c,i]));
+  const P=i=>{i%=MOD;return(i*i+7*i+13)%MOD};
+  const fw=(v,i)=>{const a=(v*K[0]+K[1])%MOD,b=(a+P(i)+K[2])%MOD;return(b*K[3]+K[4])%MOD};
+  const bw=(c,i)=>{const b=m((c-K[4])*I4);return m((m(b-P(i)-K[2])-K[1])*I1)};
+  const chk=cps=>{let s=0;cps.forEach((c,i)=>s=(s+c*(i+1))%99991);return String(s).padStart(5,'0')};
+  const enc=text=>{
+    const cps=[...text].map(c=>c.codePointAt(0)),tok=[START];
+    for(const cp of cps){const c=String.fromCodePoint(cp);if(val.has(c))tok.push(val.get(c));else tok.push(EXT,(cp>>16)&255,(cp>>8)&255,cp&255)}
+    tok.push(END);
+    return'PX3§01§'+cps.length+'§'+tok.map((v,i)=>SYM[fw(v,i)]).join('')+'§'+chk(cps)+'¶';
+  };
+  const dec=raw=>{
+    const t=raw.trim();
+    if(!t.startsWith('PX3'))throw new Error('Invalid PX3 Header.');
+    if(!t.endsWith('¶'))throw new Error('Incomplete Message: end marker missing.');
+    const p=t.slice(3,-1).split('§');
+    if(p.length!==5||p[0]!==''||!/^\d+$/.test(p[2])||!/^\d{5}$/.test(p[4]))throw new Error('Missing Structural Marker.');
+    if(p[1]!=='01')throw new Error('Invalid Key Configuration.');
+    const tok=[];let i=0;
+    for(const s of p[3]){if(!SI.has(s))throw new Error('Unknown Symbol: '+s);tok.push(bw(SI.get(s),i++))}
+    if(tok.length<2||tok[0]!==START||tok[tok.length-1]!==END)throw new Error('Missing Structural Marker: START or END.');
+    const cps=[];
+    for(let j=1;j<tok.length-1;j++){
+      const v=tok[j];
+      if(v===EXT){
+        if(j+3>tok.length-2)throw new Error('Incomplete Message.');
+        const[a,b,c]=[tok[j+1],tok[j+2],tok[j+3]];
+        if(a>255||b>255||c>255)throw new Error('Invalid Character Value.');
+        const cp=a*65536+b*256+c;if(cp>0x10FFFF)throw new Error('Invalid Character Value.');
+        cps.push(cp);j+=3;
+      }else{const c=chr.get(v);if(c===undefined)throw new Error('Invalid Character Value.');cps.push(c.codePointAt(0))}
+    }
+    if(cps.length!==+p[2])throw new Error('Incorrect Payload Length.');
+    if(chk(cps)!==p[4])throw new Error('Verification Failed.');
+    return{text:cps.map(c=>String.fromCodePoint(c)).join(''),n:cps.length};
+  };
+  return{enc,dec,size:SYM.length};
+})();
+const enc3=V3.enc,dec3=V3.dec;
+function setVer(v){
+  ver=v;$('v2').classList.toggle('on',v===2);$('v3').classList.toggle('on',v===3);
+  document.querySelector('h1 span').textContent=v===3?'V3.0':'V2.1';
+  document.querySelector('footer b').textContent='PIXELS CODE '+(v===3?'V3.0':'V2.1');
+  run();
+}
+$('v2').onclick=()=>setVer(2);$('v3').onclick=()=>setVer(3);
 /*NAV*/
 const VIEWS={translator:'Translator',about:'About Pixels Code',developer:'The Developer',secret:'⚠'};
 const hb=$('hb'),mn=$('menu');
