@@ -82,7 +82,11 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .danger{display:block;margin-top:14px;padding:14px;text-align:center;border:1px solid var(--ac);border-radius:12px;background:#1d0000;color:#fff;text-decoration:none;font-weight:700;word-break:break-all}
 .danger:hover{background:var(--ac)}
 @media(prefers-reduced-motion:reduce){.sec h1,.warn{animation:none}}
-#vs{margin-bottom:8px}
+#vs{margin-bottom:8px;grid-template-columns:repeat(3,1fr)}
+#vs button{font-size:.85rem}
+.ops .wide{grid-column:1/-1}
+.cnt{margin-top:6px;font-size:.78rem;color:var(--mu);text-align:right}
+.alpha{font-family:ui-monospace,Menlo,Consolas,monospace;word-break:break-all;direction:ltr;unicode-bidi:isolate;color:var(--tx)}
 .vnote{margin-top:12px!important;padding:12px;border:1px solid var(--ac2);border-radius:12px;background:var(--in)}
 </style></head><body>
 <div class="bg"></div>
@@ -99,10 +103,11 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <p class="sub">Private cipher translator</p>
 </header>
 <section class="card">
-<div class="seg" id="vs"><button id="v2" class="on">Version 2.1</button><button id="v3">Version 3.0</button></div>
+<div class="seg" id="vs"><button id="v2" class="on">Version 2.1</button><button id="v3">Version 3.0</button><button id="v31">Simple 3.1</button></div>
 <div class="seg"><button id="be" class="on">English → Pixels</button><button id="bd">Pixels → English</button></div>
 <label id="li" for="in">English text</label>
-<textarea id="in" placeholder="Type here…" spellcheck="false"></textarea>
+<textarea id="in" dir="auto" placeholder="Type here…" spellcheck="false"></textarea>
+<div class="cnt" id="cnt">0 characters</div>
 <label>Result</label>
 <div class="box" id="out"></div>
 <div id="st"></div>
@@ -115,17 +120,27 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <p>PIXELS CODE is a custom linguistic encoding system created by Pixels.</p>
 <p>It was designed to transform ordinary English text into a unique coded format that looks completely different from the original message.</p>
 <p>Unlike traditional text translators, PIXELS CODE uses its own custom encoding and decoding rules to convert messages between English and Pixels Code.</p>
-<p>This website now includes two independent versions: <b>V2.1</b> and <b>V3.0</b>. Switch between them from the Translator page.</p></div>
-<div class="panel"><h2>How Does It Work?</h2><p>Both versions have two main operations:</p>
+<p>This website now includes three independent versions: <b>V2.1</b>, <b>V3.0</b> and <b>V3.1 (Simple / Notebook Edition)</b>. Switch between them from the Translator page.</p></div>
+<div class="panel"><h2>How Does It Work?</h2><p>All versions have two main operations:</p>
 <div class="ops"><div><b>1. Encoding</b><span>English → Pixels Code</span><p>The system takes an English message and processes it using its custom encoding rules, producing a coded output.</p></div>
 <div><b>2. Decoding</b><span>Pixels Code → English</span><p>The system processes the coded message in reverse, reconstructing the original English text.</p></div></div></div>
 <div class="panel"><h2>Versions</h2>
 <div class="ops"><div><b>V2.1</b><span>PX2 header</span><p>English letters and common punctuation. Uses a custom alphabet, positional shifts, word rotations, a word counter and a checksum.</p></div>
-<div><b>V3.0</b><span>PX3 header</span><p>A separate engine with its own 257-symbol library, multi-key mathematics, position-based rules and layered verification.</p></div></div>
-<p class="vnote"><b>New in V3.0:</b> it can convert text in both <b>English</b> and <b>Arabic</b>, plus numbers, symbols, emojis and other Unicode text. It also preserves spaces and line breaks exactly.</p></div>
+<div><b>V3.0</b><span>PX3 header</span><p>A separate engine with its own 257-symbol library, multi-key mathematics, position-based rules and layered verification.</p></div>
+<div class="wide"><b>V3.1 · Simple</b><span>PXN header · Notebook Edition</span><p>A simplified, handwriting-friendly version of V3.0. It uses only letters and a few easy symbols, so you can write the whole message in an ordinary notebook. It has its own engine, separate from V2.1 and V3.0.</p></div></div>
+<p class="vnote"><b>New in V3.0:</b> it can convert text in both <b>English</b> and <b>Arabic</b>, plus numbers, symbols, emojis and other Unicode text. It also preserves spaces and line breaks exactly.</p>
+<p class="vnote"><b>New in V3.1:</b> built for notebooks. No chess pieces, emojis, drawings or digits in the output, just easy-to-write characters. English and Arabic are both supported, and decoding gives back the exact original text.</p></div>
+<div class="panel"><h2>V3.1 — Notebook Edition</h2>
+<ul class="feat">
+<li><b>Purpose</b>V3.0 uses symbols that are hard to draw by hand (like chess pieces). V3.1 fixes that so you can encode and decode messages manually in a notebook.</li>
+<li><b>Format</b>Every message looks like <span class="alpha">PXN/[ENCODED DATA][CHECKSUM]</span>, with no spaces between characters.</li>
+<li><b>Allowed characters</b><span class="alpha">A–Z</span> and <span class="alpha">/ ( ) [ ] &lt; &gt; # $ @ √ π % ∆ \ Π | ~</span> (44 characters in total).</li>
+<li><b>Languages</b>English and Arabic, plus numbers, punctuation, spaces and multiple lines. Arabic is never translated or reversed.</li>
+<li><b>How it works</b>The text is converted to UTF-8 bytes, each byte goes through a reversible position-based transformation, then is written as exactly two characters from the 44-character alphabet. The last two characters are a checksum.</li>
+<li><b>Verification</b>When decoding, the checksum is checked. If it fails, you get a checksum error instead of text.</li></ul></div>
 <div class="panel"><h2>System Features</h2><ul class="feat">
-<li><b>PX2 / PX3 Header</b>Identifies the version: PX2 for V2.1 and PX3 for V3.0.</li>
-<li><b>Word / Character Counter</b>Tracks the number of words (V2.1) or characters (V3.0) in the message.</li>
+<li><b>PX2 / PX3 / PXN Header</b>Identifies the version: PX2 for V2.1, PX3 for V3.0 and PXN for V3.1.</li>
+<li><b>Word / Character Counter</b>Tracks the number of words (V2.1) or characters (V3.0 and V3.1) in the message.</li>
 <li><b>Checksum</b>Provides a verification value for checking message consistency.</li>
 <li><b>Custom Transformations</b>Uses its own set of linguistic and positional transformations.</li>
 <li><b>Reversible Encoding</b>Allows encoded messages to be converted back into their original text.</li></ul></div>
@@ -135,7 +150,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <p>Do not use it to protect passwords, private information, or sensitive data.</p>
 <p>It is simply a creative coding project made to be shared and enjoyed by everyone.</p><a class="egg" href="#secret">do not click</a>
 </div>
-<div class="panel"><div class="facts"><div><small>Versions</small>PIXELS CODE V2.1 · V3.0</div><div><small>Created by</small>Pixels</div><div><small>Purpose</small>Just for fun</div></div></div>
+<div class="panel"><div class="facts"><div><small>Versions</small>PIXELS CODE V2.1 · V3.0 · V3.1</div><div><small>Created by</small>Pixels</div><div><small>Purpose</small>Just for fun</div></div></div>
 <a class="back" href="#translator">← Back to Translator</a>
 </section>
 <section id="v-developer" class="view" hidden>
@@ -228,7 +243,16 @@ const $=i=>document.getElementById(i);let mode='enc';
 function run(){
   const st=$('st');st.className='';st.textContent='';
   try{
-    const iv=$('in').value;$('out').style.cssText=ver===3&&mode==='enc'?'direction:ltr;unicode-bidi:bidi-override':'';
+    const iv=$('in').value;$('cnt').textContent=[...iv].length+' characters';
+    $('out').style.cssText=ver!==2&&mode==='enc'?'direction:ltr;unicode-bidi:bidi-override':(ver===31?'unicode-bidi:plaintext':'');
+    if(ver===31){
+      if(!iv){$('out').textContent='';return}
+      if(mode==='enc')$('out').textContent=V31.enc(iv);
+      else{const r=V31.dec(iv);
+        if(!r.ok){$('out').textContent='';st.className='err';st.textContent='CHECKSUM ERROR — DATA MAY BE INCORRECT.';return}
+        $('out').textContent=r.text;st.className='ok';st.textContent='✓ Checksum verified  ·  '+r.n+' characters'}
+      return;
+    }
     if(ver===3?!iv:!iv.trim()){$('out').textContent='';return}
     if(ver===3){
       if(mode==='enc')$('out').textContent=enc3(iv);
@@ -247,7 +271,7 @@ function run(){
 }
 function setMode(m){
   mode=m;$('be').classList.toggle('on',m==='enc');$('bd').classList.toggle('on',m==='dec');
-  $('li').textContent=m==='enc'?'English text':'Pixels Code text';run();
+  $('li').textContent=m==='enc'?(ver===31?'English / Arabic text':'English text'):'Pixels Code text';run();
 }
 $('be').onclick=()=>setMode('enc');$('bd').onclick=()=>setMode('dec');
 $('in').oninput=run;
@@ -318,13 +342,40 @@ const V3=(()=>{
   return{enc,dec,size:SYM.length};
 })();
 const enc3=V3.enc,dec3=V3.dec;
+/*V31*/
+const V31=(()=>{
+  const AL=[...'ABCDEFGHIJKLMNOPQRSTUVWXYZ/()[]<>#$@√π%∆\\Π|~'],IX=new Map(AL.map((c,i)=>[c,i]));
+  const pr=v=>AL[Math.floor(v/44)]+AL[v%44];
+  const enc=text=>{
+    const b=new TextEncoder().encode(text);let s='',sum=0;
+    for(let i=0;i<b.length;i++){sum+=b[i];s+=pr((5*b[i]+17+11*i)%256)}
+    return'PXN/'+s+pr(sum%1936);
+  };
+  const dec=raw=>{
+    const t=raw.replace(/\s+/g,'').replace(/[a-z]/g,c=>c.toUpperCase());
+    if(!t.startsWith('PXN/'))throw new Error('Invalid input: missing PXN/ header.');
+    const body=t.slice(4);
+    if(body.length<2||body.length%2)throw new Error('Invalid input: incorrect length.');
+    const v=[];for(const c of body){if(!IX.has(c))throw new Error('Invalid input: character not allowed ('+c+').');v.push(IX.get(c))}
+    const chk=v[v.length-2]*44+v[v.length-1],d=v.slice(0,-2),n=d.length/2,by=new Uint8Array(n);let sum=0;
+    for(let i=0;i<n;i++){
+      const y=d[2*i]*44+d[2*i+1];if(y>255)throw new Error('Invalid input: bad data pair.');
+      by[i]=(((205*(y-17-11*i))%256)+256)%256;sum+=by[i];
+    }
+    if(sum%1936!==chk)return{ok:false};
+    let text;try{text=new TextDecoder('utf-8',{fatal:true}).decode(by)}catch(e){return{ok:false}}
+    return{ok:true,text,n:[...text].length};
+  };
+  return{enc,dec};
+})();
 function setVer(v){
-  ver=v;$('v2').classList.toggle('on',v===2);$('v3').classList.toggle('on',v===3);
-  document.querySelector('h1 span').textContent=v===3?'V3.0':'V2.1';
-  document.querySelector('footer b').textContent='PIXELS CODE '+(v===3?'V3.0':'V2.1');
-  run();
+  ver=v;$('v2').classList.toggle('on',v===2);$('v3').classList.toggle('on',v===3);$('v31').classList.toggle('on',v===31);
+  const nm={2:'V2.1',3:'V3.0',31:'V3.1'}[v];
+  document.querySelector('h1 span').textContent=nm;
+  document.querySelector('footer b').textContent='PIXELS CODE '+nm;
+  setMode(mode);
 }
-$('v2').onclick=()=>setVer(2);$('v3').onclick=()=>setVer(3);
+$('v2').onclick=()=>setVer(2);$('v3').onclick=()=>setVer(3);$('v31').onclick=()=>setVer(31);
 /*NAV*/
 const VIEWS={translator:'Translator',about:'About Pixels Code',developer:'The Developer',secret:'⚠'};
 const hb=$('hb'),mn=$('menu');
